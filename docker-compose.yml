@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "53006:53006"
+    volumes:
+      - ./backend:/app
+      - backend_data:/app/static
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/bbmodel
+      - SECRET_KEY=supersecretkey
+      - USE_CUDA=0
+    depends_on:
+      - db
+    networks:
+      - bbmodel-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "59555:59555"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:53006/api
+      - PORT=59555
+    depends_on:
+      - backend
+    networks:
+      - bbmodel-network
+
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bbmodel
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bbmodel-network
+
+networks:
+  bbmodel-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  backend_data:

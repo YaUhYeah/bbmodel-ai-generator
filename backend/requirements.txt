@@ -1,0 +1,16 @@
+fastapi>=0.95.0
+uvicorn>=0.21.1
+pydantic>=2.0.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.6
+sqlalchemy>=2.0.0
+alembic>=1.10.3
+psycopg2-binary>=2.9.6
+python-dotenv>=1.0.0
+pillow>=9.5.0
+numpy>=1.24.3
+torch>=2.0.0
+transformers>=4.28.1
+diffusers>=0.16.1
+accelerate>=0.18.0
